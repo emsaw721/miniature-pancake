@@ -12,6 +12,7 @@ const userSchema = new Schema({
         type: String, 
         required: true,
         unique: true,
+        match: [/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/]
         // mongoose matching validation 
     },
     thoughts: [
@@ -42,11 +43,6 @@ const userSchema = new Schema({
 userSchema.virtual('friendCount').get(function() {
     return this.friends.reduce((total, friend) => total + friend.length + 1, 0); 
 }); 
-
-userSchema.path('email').validate(function(email) {
-    var emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/; 
-    return emailRegex.test(email.text);
-}, 'The email field cannot be empty.')
 
 const User = model('User', userSchema); 
 
