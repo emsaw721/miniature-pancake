@@ -50,7 +50,7 @@ const userController = {
                 res.status(404).json({message: 'No user with that id found.'});
                 return; 
             }
-            res.json(deletedUser);
+            res.json(`User ${deletedUser.username} was deleted`);
         })
         .catch(err => res.status(400).json(err)); 
     }
