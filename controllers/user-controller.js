@@ -4,6 +4,9 @@ const userController = {
     //get all users
     getAllUser(req,res) {
         User.find({})
+        //-__v is versionKey, propert set on each document when created by Mongoose, contains internal revision of document
+        .select('-__v')
+        .sort({ _id: -1})
         .then(allUsers => res.json(allUsers))
         .catch(err => {
             console.log(err);
