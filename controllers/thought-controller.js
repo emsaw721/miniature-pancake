@@ -1,22 +1,24 @@
 const {Thought, User} = require('../models');
 
 const thoughtController = {
-    addThought({ params, body}, res) {
+    addThought({body}, res) {
         console.log(body);
         Thought.create(body)
-        .then(({_id}) => {
+        .then((addedThought) => {
+            console.log(addedThought)
             return User.findOneAndUpdate(
-                {_id: params.userId},
-                {$push: {thoughts: _id}},
+                {_id: body.userId},
+                {$push: {thoughts: thought.thoughtText}},
                 {new:true}
             );
         })
-        .then(addedThought => {
-            if(!addedThought) {
+        .then(userData => {
+            console.log(userData)
+            if(!userData) {
                 res.status(404).json({message: 'No user found with is id.'});
                 return; 
             }
-            res.json(addedThought)
+            res.json(userData)
         })
         .catch(err => 
             res.json(err));
