@@ -31,17 +31,34 @@ const userController = {
         .catch(err => res.status(400).json(err)); 
     },
 
+    addFriend({params, body}, res) {
+        User.fineOneAndUpdate({_id: params.id}, {$push: {friends: body.id}})
+        .then(addedFriend => {
+            console.log(addedFriend);
+            if(!addedFriend) {
+                res.status(404).json({message: 'No user with this id found.'});
+                return; 
+            }
+            res.json(addedFriend)
+        })
+        .catch(err => {
+            console.log(err); 
+            res.json(err)
+        }); 
+    },
+
     updateUser({params, body}, res) {
         User.findOneAndUpdate({_id:params.id}, body, {new:true}, (err,result) => {
             if(result) {
                 res.status(200).json(result);
                 console.log(result); 
             } else {
-              console.log('Uh Oh, something went wrong');
+              console.log('Something went wrong!');
               res.status(500).json({ message: 'something went wrong' });
             }
     })
     },
+    
 
     deleteUser({params}, res) {
         User.findOneAndDelete({_id: params.id})
