@@ -32,19 +32,10 @@ const userController = {
     },
 
     addFriend({params, body}, res) {
-        User.fineOneAndUpdate({_id: params.id}, {$push: {friends: body.id}})
-        .then(addedFriend => {
-            console.log(addedFriend);
-            if(!addedFriend) {
-                res.status(404).json({message: 'No user with this id found.'});
-                return; 
-            }
-            res.json(addedFriend)
+        User.fineOne({_id: params.id})
+        .populate({
+            path: 'friends'
         })
-        .catch(err => {
-            console.log(err); 
-            res.json(err)
-        }); 
     },
 
     updateUser({params, body}, res) {
