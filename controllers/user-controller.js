@@ -16,7 +16,7 @@ const userController = {
 
     getUserById({params}, res) {
         User.findOne({_id: params.id})
-        .populate('reactions')
+        .populate('thoughts')
         .populate('friends')
         .then(oneUser => res.json(oneUser))
         .catch(err => {
@@ -31,11 +31,21 @@ const userController = {
         .catch(err => res.status(400).json(err)); 
     },
 
-    addFriend({params, body}, res) {
-        User.fineOne({_id: params.id})
-        .populate({
-            path: 'friends'
+    addFriend({params,body}, res) {
+        User.findOne({_id: params.id}, { $addToSet: {friends: _id}}, (err,result) => {
+            console.log(params); 
         })
+        .then(addedFriend => {
+            console.log(addedFriend);
+            res.json(addedFriend);
+        })
+    },
+
+    removeFriend({ params }, res) {
+        User.findOneAndUpdate(
+            {_id: params.id},
+            {$pull: {friends: {id: params.friendId}}}
+        )
     },
 
     updateUser({params, body}, res) {
@@ -50,7 +60,6 @@ const userController = {
     })
     },
     
-
     deleteUser({params}, res) {
         User.findOneAndDelete({_id: params.id})
         .then(deletedUser => {

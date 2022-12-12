@@ -13,7 +13,18 @@ const thoughtController = {
             });
     },
 
+    getThoughtById({params}, res) {
+        Thought.findOne({_id: params.thoughtId})
+        .populate('reactions')
+        .then(oneThought => res.json(oneThought))
+        .catch(err => {
+            console.log(err);
+            res.status(400).json(err); 
+        })
+    },
+
     addThought({ body }, res) {
+
         Thought.create(body)
             .then(({ _id }) => {
                 return User.findOneAndUpdate(
