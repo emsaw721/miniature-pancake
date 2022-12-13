@@ -43,10 +43,16 @@ const userController = {
     },
 
     removeFriend({ params }, res) {
-        User.findOneAndDelete(
-            { _id: params.id },
-            { $pull: { friends: { id: params.friendId } } }
+        console.log(params); 
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $pull: { friends: { friendId: params.friendId } } },
+            {new: true}
         )
+        .then(deletedFriend => {
+            res.json(`Friend ${deletedFriend} removed from friend list. `);
+        })
+        .catch(err => res.status(400).json(err)); 
     },
 
     updateUser({ params, body }, res) {
