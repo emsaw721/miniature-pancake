@@ -31,30 +31,6 @@ const userController = {
             .catch(err => res.status(400).json(err));
     },
 
-    addFriend({ params, body }, res) {
-        console.log(body); 
-    User.findOneAndUpdate(
-                    { _id: params.userId },
-                    { $addToSet: { friends: params.friendId } }
-            ).then(addedFriend => {
-                console.log(addedFriend);
-                res.json(addedFriend);
-            })
-    },
-
-    removeFriend({ params }, res) {
-        console.log(params); 
-        User.findOneAndUpdate(
-            { _id: params.userId },
-            { $pull: { friends: { friendId: params.friendId } } },
-            {new: true}
-        )
-        .then(deletedFriend => {
-            res.json(`Friend ${deletedFriend} removed from friend list. `);
-        })
-        .catch(err => res.status(400).json(err)); 
-    },
-
     updateUser({ params, body }, res) {
         User.findOneAndUpdate({ _id: params.id }, body, { new: true }, (err, result) => {
             if (result) {
@@ -77,7 +53,28 @@ const userController = {
                 res.json(`User ${deletedUser.username} was deleted`);
             })
             .catch(err => res.status(400).json(err));
+    },
+
+    addFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $addToSet: { friends: params.friendId } }
+        ).then(addedFriend => {
+            console.log(addedFriend);
+            res.json(addedFriend);
+        })
+    },
+
+    removeFriend({ params }, res) {
+        console.log(params);
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $pull: { friends: { _id: params.friendId } } },
+            { new: true }
+        )
+            .then(updatedFriendList => res.json(updatedFriendList))
+            .catch(err => res.json(err));
     }
-}
+}; 
 
 module.exports = userController; 
