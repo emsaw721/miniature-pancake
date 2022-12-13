@@ -31,13 +31,11 @@ const userController = {
             .catch(err => res.status(400).json(err));
     },
 
-    addFriend({ body }, res) {
+    addFriend({ params, body }, res) {
         console.log(body); 
     User.findOneAndUpdate(
-                    { _id: body.userId },
-                    { $push: { friends: body.friendId } },
-                    { new: true }
-                
+                    { _id: params.userId },
+                    { $addToSet: { friends: params.friendId } }
             ).then(addedFriend => {
                 console.log(addedFriend);
                 res.json(addedFriend);
