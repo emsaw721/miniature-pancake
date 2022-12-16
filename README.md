@@ -3,7 +3,7 @@
 ## Description 
 https://drive.google.com/file/d/1N6OZgRS5TrZB2EiVJwmFcWeyigZi5_j-/view<br>
 
-This application is the back end of a social media website using a NOSQL database. 
+This application is the back end of a social media website using a NOSQL database. The routes can be tested using <a href="https://insomnia.rest/download">Insomnia</a>. 
 
 
 ## Table of Contents 
