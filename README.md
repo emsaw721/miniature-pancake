@@ -45,7 +45,7 @@ The application also allows for other users to react to thoughts using a thought
 
 
 ## Road Map
-
 Future iterations of this application will include a front end to create a fully functioning social media website. 
 
 ## License 
+[MIT](https://choosealicense.com/licenses/mit/)
